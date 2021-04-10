@@ -46,7 +46,7 @@ func (mc *MetricsCollector) Run() error {
 	}
 
 	apiEndpoint, _ := url.Parse(mc.apiEndpoint.String())
-	apiEndpoint.Path = "/api/devices/register"
+	apiEndpoint.Path = apiEndpoint.Path + "/api/devices/register"
 
 	deviceRespWrapper := new(models.DeviceWrapper)
 
@@ -140,7 +140,7 @@ func (mc *MetricsCollector) Publish(deviceWWN string, payload []byte) error {
 	mc.logger.Infof("Publishing smartctl results for %s\n", deviceWWN)
 
 	apiEndpoint, _ := url.Parse(mc.apiEndpoint.String())
-	apiEndpoint.Path = fmt.Sprintf("/api/device/%s/smart", strings.ToLower(deviceWWN))
+	apiEndpoint.Path = apiEndpoint.Path + fmt.Sprintf("/api/device/%s/smart", strings.ToLower(deviceWWN))
 
 	resp, err := httpClient.Post(apiEndpoint.String(), "application/json", bytes.NewBuffer(payload))
 	if err != nil {
